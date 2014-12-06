@@ -3,7 +3,7 @@ package net.kuhlmeyer.owlib;
 
 import java.util.Date;
 
-public class WeatherData {
+public class Weather {
 
 
 	private Date timestamp;

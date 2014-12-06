@@ -35,7 +35,7 @@ public class Open2300 {
     }
 
 
-    public WeatherData queryWeatherData() throws SocketException, IOException {
+    public Weather queryWeatherData() throws SocketException, IOException {
 
         LOG.debug("Collecting data from weather station at '" + device + "'");
 
@@ -43,7 +43,7 @@ public class Open2300 {
         try {
             serialPort = openPort();
 
-            WeatherData dataEntry = new WeatherData();
+            Weather dataEntry = new Weather();
             dataEntry.setTimestamp(new Date());
             dataEntry.setTemperatureIn(getTemperature(0x0346));
             dataEntry.setTemperatureOut(getTemperature(0x0373));
