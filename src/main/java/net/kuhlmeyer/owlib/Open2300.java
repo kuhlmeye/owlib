@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.SocketException;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -257,14 +258,14 @@ public class Open2300 {
             int res = sendAndReceive((req));
             int ack = (((i * 0x10) + (req - 0x82) / 4));
 
-            LOG.debug(String.format("Req: %02x, Res: %02x, Ack: %02x", req, res, ack));
+            LOG.trace(String.format("Req: %02x, Res: %02x, Ack: %02x", req, res, ack));
         }
 
         int readReq = 0xC2 + (len * 4);
         int readRes = sendAndReceive(readReq);
         int readAck = 0x30 + len;
 
-        LOG.debug(String.format("ReadReq: %02x, ReadRes: %02x, ReadAck: %02x", readReq, readRes, readAck));
+        LOG.trace(String.format("ReadReq: %02x, ReadRes: %02x, ReadAck: %02x", readReq, readRes, readAck));
 
         sleep(300);
 
@@ -315,11 +316,17 @@ public class Open2300 {
             readFromStation(addr, len, retry - 1);
         }
 
+        if(LOG.isDebugEnabled() && data != null) {
+            LOG.debug("Received data: " + Arrays.toString(data));
+        }
+
         boolean result = false;
         for (int i : data) {
             result |= i != 0x00;
         }
+
         if (!result) {
+            LOG.debug("Returning null");
             return null;
         }
 
